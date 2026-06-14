@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kiwi — 내 브랜드 숏폼, AI로 자동 제작</title>
+  <meta name="description" content="해외 진출을 원하는 뷰티·건강기능식품 브랜드를 위한 AI 숏폼 콘텐츠 자동 제작. 인스타 링크만 주면 완성 영상을 보내드립니다. 무료 샘플 신청." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="kiwi — 내 브랜드 숏폼, AI로 자동 제작" />
+  <meta property="og:description" content="인스타 링크만 주면 완성 숏폼을 보내드립니다. 무료 샘플 신청하세요." />
+  <meta property="og:type" content="website" />
+
+  <!-- Pretendard (한글 본문/헤드라인) -->
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#0A0A0A',       // 본문/버튼 거의 검정
+            paper: '#FFFFFF',     // 배경
+            mist: '#F5F5F5',      // 섹션 구분 회색
+            line: '#E5E5E5',      // 보더
+            mute: '#6B6B6B',      // 보조 텍스트
+          },
+          fontFamily: {
+            sans: ['Pretendard', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          maxWidth: { content: '1120px' },
+          letterSpacing: { tightest: '-0.04em' },
+        },
+      },
+    };
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { -webkit-font-smoothing: antialiased; word-break: keep-all; }
+    /* 섹션 진입 페이드업 */
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+  </style>
+</head>
+
+<body class="bg-paper text-ink font-sans antialiased selection:bg-ink selection:text-paper">
+
+  <!-- ============ 헤더 내비 ============ -->
+  <header class="sticky top-0 z-50 border-b border-line bg-paper/85 backdrop-blur">
+    <nav class="mx-auto flex max-w-content items-center justify-between px-5 py-4">
+      <a href="#top" class="flex items-center gap-2">
+        <img src="assets/logo.png" alt="kiwi" class="h-8 w-auto" />
+        <span class="text-xl font-extrabold tracking-tightest">kiwi</span>
+      </a>
+
+      <div class="hidden items-center gap-8 md:flex">
+        <a href="#how" class="text-sm text-mute transition hover:text-ink">작동 방식</a>
+        <a href="#why" class="text-sm text-mute transition hover:text-ink">차별점</a>
+        <a href="#pricing" class="text-sm text-mute transition hover:text-ink">가격</a>
+        <a href="#faq" class="text-sm text-mute transition hover:text-ink">FAQ</a>
+        <a href="#apply" class="rounded-full bg-ink px-5 py-2 text-sm font-semibold text-paper transition hover:opacity-80">내 브랜드 숏폼 영상 받아보기</a>
+      </div>
+
+      <!-- 모바일 토글 -->
+      <button id="navToggle" aria-label="메뉴 열기" aria-expanded="false" class="md:hidden">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </nav>
+
+    <!-- 모바일 메뉴 -->
+    <div id="mobileMenu" class="hidden border-t border-line bg-paper md:hidden">
+      <div class="flex flex-col px-5 py-3">
+        <a href="#how" class="py-3 text-sm text-mute">작동 방식</a>
+        <a href="#why" class="py-3 text-sm text-mute">차별점</a>
+        <a href="#pricing" class="py-3 text-sm text-mute">가격</a>
+        <a href="#faq" class="py-3 text-sm text-mute">FAQ</a>
+        <a href="#apply" class="mt-2 rounded-full bg-ink px-5 py-3 text-center text-sm font-semibold text-paper">내 브랜드 숏폼 영상 받아보기</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ 1. 히어로 ============ -->
+    <section class="mx-auto max-w-content px-5 pt-20 pb-16 text-center md:pt-28 md:pb-24">
+      <p class="reveal mb-5 inline-block rounded-full border border-line px-4 py-1.5 text-xs font-medium tracking-wide text-mute">
+        뷰티 · 건강기능식품 브랜드를 위한 AI 숏폼 스튜디오
+      </p>
+      <h1 class="reveal mx-auto max-w-3xl text-4xl font-extrabold leading-[1.3] tracking-tightest md:text-6xl">
+        바이럴 영상 링크 하나면 끝.<br class="hidden sm:block" /> 브랜드 맞춤 숏폼 영상으로 뚝딱!
+      </h1>
+      <p class="reveal mx-auto mt-6 max-w-xl text-base leading-relaxed text-mute md:text-lg">
+        고려대 출신 마케터와 개발자가 만든 숏폼 자동화 솔루션. 바이럴 영상 링크만 넣으면 우리 브랜드에 딱 맞는 숏폼으로 자동 변환해 드립니다.
+      </p>
+      <div class="reveal mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <a href="#apply" class="w-full rounded-full bg-ink px-8 py-4 text-base font-semibold text-paper transition hover:opacity-80 sm:w-auto">
+          내 브랜드 숏폼 영상 받아보기
+        </a>
+        <a href="#how" class="w-full rounded-full border border-line px-8 py-4 text-base font-semibold text-ink transition hover:bg-mist sm:w-auto">
+          작동 방식 보기
+        </a>
+      </div>
+      <p class="reveal mt-4 text-xs text-mute">신용카드 불필요 · 첫 영상 무료</p>
+
+      <!-- 데모 영상 (실제 샘플 숏폼) -->
+      <div class="reveal mx-auto mt-14 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
+        <button type="button" class="sample-card group relative aspect-[9/16] overflow-hidden rounded-2xl border border-line bg-mist" aria-label="샘플 영상 재생">
+          <video class="h-full w-full object-cover" src="assets/sample-01.mp4" poster="assets/sample-01.jpg" muted loop playsinline preload="metadata"></video>
+          <span class="play-badge pointer-events-none absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-ink/70 text-paper transition group-hover:bg-ink">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+        </button>
+        <button type="button" class="sample-card group relative aspect-[9/16] overflow-hidden rounded-2xl border border-line bg-mist" aria-label="샘플 영상 재생">
+          <video class="h-full w-full object-cover" src="assets/sample-02.mp4" poster="assets/sample-02.jpg" muted loop playsinline preload="metadata"></video>
+          <span class="play-badge pointer-events-none absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-ink/70 text-paper transition group-hover:bg-ink">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+        </button>
+        <button type="button" class="sample-card group relative aspect-[9/16] overflow-hidden rounded-2xl border border-line bg-mist" aria-label="샘플 영상 재생">
+          <video class="h-full w-full object-cover" src="assets/sample-03.mp4" poster="assets/sample-03.jpg" muted loop playsinline preload="metadata"></video>
+          <span class="play-badge pointer-events-none absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-ink/70 text-paper transition group-hover:bg-ink">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+        </button>
+        <button type="button" class="sample-card group relative aspect-[9/16] overflow-hidden rounded-2xl border border-line bg-mist" aria-label="샘플 영상 재생">
+          <video class="h-full w-full object-cover" src="assets/sample-04.mp4" poster="assets/sample-04.jpg" muted loop playsinline preload="metadata"></video>
+          <span class="play-badge pointer-events-none absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-ink/70 text-paper transition group-hover:bg-ink">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+        </button>
+      </div>
+      <p class="mt-3 text-xs text-mute/70">↑ kiwi가 만든 실제 샘플 숏폼 · 카드를 누르면 소리와 함께 재생됩니다</p>
+    </section>
+
+    <!-- ============ 2. 소셜프루프 스트립 ============ -->
+    <section class="border-y border-line bg-mist">
+      <div class="mx-auto grid max-w-content grid-cols-1 gap-8 px-5 py-12 text-center sm:grid-cols-3">
+        <div class="reveal">
+          <div class="text-3xl font-extrabold tracking-tightest md:text-4xl">영상 10개</div>
+          <p class="mt-1 text-sm text-mute">로 인스타 3만 팔로워를 만든 레퍼런스 기반</p>
+        </div>
+        <div class="reveal">
+          <div class="text-3xl font-extrabold tracking-tightest md:text-4xl">9:16 · 1080p</div>
+          <p class="mt-1 text-sm text-mute">릴스·쇼츠·틱톡에 바로 올리는 세로 숏폼</p>
+        </div>
+        <div class="reveal">
+          <div class="text-3xl font-extrabold tracking-tightest md:text-4xl">국문 → 영·스페인어</div>
+          <p class="mt-1 text-sm text-mute">해외 진출까지 이어지는 다국어 확장</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3. 문제 제기 (Why now) ============ -->
+    <section class="mx-auto max-w-content px-5 py-20 md:py-28">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="reveal text-3xl font-extrabold tracking-tightest md:text-4xl">
+          해외로 나가고 싶은데,<br />콘텐츠가 발목을 잡습니다
+        </h2>
+        <p class="reveal mt-5 text-base leading-relaxed text-mute">
+          좋은 제품은 있는데, 숏폼을 꾸준히 만들 팀도 시간도 없습니다.
+          외주는 비싸고 느리고, 직접 하자니 어디서부터 손대야 할지 막막하죠.
+        </p>
+      </div>
+
+      <div class="mt-12 grid gap-5 md:grid-cols-3">
+        <div class="reveal rounded-2xl border border-line p-7">
+          <div class="text-sm font-bold text-mute">콘텐츠 팀이 없다</div>
+          <p class="mt-2 text-lg font-semibold leading-snug">기획부터 촬영, 편집까지… 이걸 내부에서 다 떠안기엔 너무 막막하잖아요.</p>
+        </div>
+        <div class="reveal rounded-2xl border border-line p-7">
+          <div class="text-sm font-bold text-mute">비용·시간 부담</div>
+          <p class="mt-2 text-lg font-semibold leading-snug">외주 제작에 들어가는 비용과 시간, 매번 감당하기 벅차죠.</p>
+        </div>
+        <div class="reveal rounded-2xl border border-line p-7">
+          <div class="text-sm font-bold text-mute">해외 콘텐츠 막막</div>
+          <p class="mt-2 text-lg font-semibold leading-snug">해외 진출하려면 다국어 숏폼은 필수인데, 막상 어디서부터 손대야 할지 엄두가 안 나시죠?</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 4. 작동 방식 (How it works) ============ -->
+    <section id="how" class="border-y border-line bg-mist">
+      <div class="mx-auto max-w-content px-5 py-20 md:py-28">
+        <div class="mx-auto max-w-2xl text-center">
+          <p class="reveal text-sm font-bold tracking-wide text-mute">HOW IT WORKS</p>
+          <h2 class="reveal mt-3 text-3xl font-extrabold tracking-tightest md:text-4xl">링크 하나면 끝납니다</h2>
+          <p class="reveal mt-4 text-base text-mute">복잡한 브리핑도, 미팅도 필요 없습니다. 세 단계면 완성 영상이 메일함에 도착합니다.</p>
+        </div>
+
+        <div class="mt-14 grid gap-6 md:grid-cols-3">
+          <div class="reveal rounded-2xl border border-line bg-paper p-8">
+            <div class="text-sm font-extrabold text-mute">STEP 01</div>
+            <h3 class="mt-3 text-xl font-bold">인스타 링크 제출</h3>
+            <p class="mt-2 text-sm leading-relaxed text-mute">아래 폼에 브랜드 인스타 계정 링크와 이메일만 남기면 됩니다.</p>
+          </div>
+          <div class="reveal rounded-2xl border border-line bg-paper p-8">
+            <div class="text-sm font-extrabold text-mute">STEP 02</div>
+            <h3 class="mt-3 text-xl font-bold">kiwi가 기획·제작</h3>
+            <p class="mt-2 text-sm leading-relaxed text-mute">잘 터진 레퍼런스를 분석해 당신 브랜드에 맞게 각색하고, AI로 숏폼을 만듭니다.</p>
+          </div>
+          <div class="reveal rounded-2xl border border-line bg-paper p-8">
+            <div class="text-sm font-extrabold text-mute">STEP 03</div>
+            <h3 class="mt-3 text-xl font-bold">완성본 메일 수신</h3>
+            <p class="mt-2 text-sm leading-relaxed text-mute">바로 올릴 수 있는 9:16 세로 영상을 메일로 받아 릴스·쇼츠에 업로드하세요.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 5. 기능 그리드 ============ -->
+    <section class="mx-auto max-w-content px-5 py-20 md:py-28">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="reveal text-3xl font-extrabold tracking-tightest md:text-4xl">단순한 AI 툴이 아니죠.<br class="hidden sm:block" /> kiwi만의 핵심 기능</h2>
+      </div>
+      <div class="mt-14 grid gap-5 sm:grid-cols-2">
+        <div class="reveal rounded-2xl border border-line p-8">
+          <h3 class="text-xl font-bold">레퍼런스 기반 기획</h3>
+          <p class="mt-2 text-sm leading-relaxed text-mute">조회수가 검증된 숏폼을 분석해 "왜 터졌는지"를 뽑고, 당신 브랜드에 맞게 각색합니다.</p>
+        </div>
+        <div class="reveal rounded-2xl border border-line p-8">
+          <h3 class="text-xl font-bold">AI 영상 자동 제작</h3>
+          <p class="mt-2 text-sm leading-relaxed text-mute">컷 기획부터 이미지·영상 생성, 자막까지 — 한 편의 숏폼을 통째로 만들어 드립니다.</p>
+        </div>
+        <div class="reveal rounded-2xl border border-line p-8">
+          <h3 class="text-xl font-bold">다국어 확장</h3>
+          <p class="mt-2 text-sm leading-relaxed text-mute">국문으로 검증한 콘텐츠를 영어·스페인어로 확장해 해외 진출을 돕습니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 6. 차별점 강조 ============ -->
+    <section id="why" class="bg-ink text-paper">
+      <div class="mx-auto max-w-content px-5 py-24 text-center md:py-32">
+        <p class="reveal text-sm font-bold tracking-wide text-paper/60">WHY KIWI</p>
+        <h2 class="reveal mx-auto mt-4 max-w-3xl text-3xl font-extrabold leading-snug tracking-tightest md:text-5xl">
+          AI 영상 자동화, 요새 누구나 다 한다고 하죠.<br />
+          <span class="text-paper/70">하지만 진짜 차이는 ‘무엇을 만드는가’에서 나옵니다.</span>
+        </h2>
+        <p class="reveal mx-auto mt-6 max-w-xl text-base leading-relaxed text-paper/70">
+          툴은 똑같아도 결과는 다르잖아요. kiwi는 잘 터진 콘텐츠의 구조를 읽어내
+          ‘어떤 영상을 만들 것인가’를 먼저 설계하거든요. kiwi의 압도적인 기획력이 곧 브랜드의 가장 강력한 무기가 되어줄 거예요.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ 7. 기대 효과 (목표 프레이밍) ============ -->
+    <section class="mx-auto max-w-content px-5 py-20 md:py-28">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="reveal text-3xl font-extrabold tracking-tightest md:text-4xl">kiwi가 확실하게 약속하는 3가지 변화</h2>
+      </div>
+      <div class="mt-12 grid gap-6 sm:grid-cols-3 text-center">
+        <div class="reveal rounded-2xl border border-line p-8">
+          <div class="text-4xl font-extrabold tracking-tightest md:text-5xl">↓ 제작비</div>
+          <p class="mt-3 text-sm text-mute">내부 팀 세팅이나 외주 제작과 비교해 압도적으로 제작 단가를 낮춰드려요.</p>
+        </div>
+        <div class="reveal rounded-2xl border border-line p-8">
+          <div class="text-4xl font-extrabold tracking-tightest md:text-5xl">↓ 제작 시간</div>
+          <p class="mt-3 text-sm text-mute">링크 제출 후, 단 며칠 만에 완성된 숏폼을 메일함에 꽂아드릴게요.</p>
+        </div>
+        <div class="reveal rounded-2xl border border-line p-8">
+          <div class="text-4xl font-extrabold tracking-tightest md:text-5xl">↑ 꾸준함</div>
+          <p class="mt-3 text-sm text-mute">어쩌다 한 편이 아니라, 숨 쉬듯 꾸준히 올릴 수 있는 콘텐츠 흐름을 만들어 드릴게요.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 8. 가격/플랜 ============ -->
+    <section id="pricing" class="border-y border-line bg-mist">
+      <div class="mx-auto max-w-content px-5 py-20 md:py-28">
+        <div class="mx-auto max-w-2xl text-center">
+          <h2 class="reveal text-3xl font-extrabold tracking-tightest md:text-4xl">먼저 써보고 결정하세요</h2>
+          <p class="reveal mt-4 text-base text-mute">첫 영상은 무료로 만들어 드려요. 일단 결과를 직접 보시고 마음에 들면 그때 결정하세요.</p>
+        </div>
+
+        <!-- 비용 비교 -->
+        <div class="reveal mx-auto mt-10 max-w-3xl overflow-hidden rounded-2xl border border-line bg-paper">
+          <div class="grid grid-cols-2 divide-x divide-line">
+            <div class="p-6 text-center">
+              <p class="text-xs font-bold tracking-wide text-mute">프리랜서 외주 (편집만)</p>
+              <div class="mt-4 space-y-3 text-sm">
+                <div><span class="font-semibold text-ink">평균 13만원</span><span class="text-mute"> / 영상 1편</span></div>
+                <div><span class="font-semibold text-ink">3일~1주+</span><span class="text-mute"> 제작 기간</span></div>
+                <div class="text-mute">기획·스크립트는 별도</div>
+              </div>
+            </div>
+            <div class="bg-ink p-6 text-center text-paper">
+              <p class="text-xs font-bold tracking-wide text-paper/60">kiwi</p>
+              <div class="mt-4 space-y-3 text-sm">
+                <div><span class="font-semibold">첫 영상 무료</span><span class="text-paper/60"> · 이후 맞춤 견적</span></div>
+                <div><span class="font-semibold">수일 내</span><span class="text-paper/60"> 완성본 전달</span></div>
+                <div class="text-paper/60">기획부터 완성까지 통합</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mx-auto mt-14 grid max-w-3xl gap-6 md:grid-cols-2">
+          <!-- 무료 -->
+          <div class="reveal flex flex-col rounded-2xl border border-line bg-paper p-8">
+            <h3 class="text-lg font-bold">무료 샘플</h3>
+            <div class="mt-3 text-4xl font-extrabold tracking-tightest">₩0</div>
+            <p class="mt-2 text-sm text-mute">처음 한 편, 부담 없이</p>
+            <ul class="mt-6 space-y-3 text-sm">
+              <li class="flex gap-2"><span>✓</span> 숏폼 1편 제작</li>
+              <li class="flex gap-2"><span>✓</span> 레퍼런스 기반 기획 포함</li>
+              <li class="flex gap-2"><span>✓</span> 9:16 · 1080p 완성본</li>
+            </ul>
+            <a href="#apply" class="mt-8 rounded-full bg-ink px-6 py-3 text-center text-sm font-semibold text-paper transition hover:opacity-80">무료로 시작</a>
+          </div>
+
+          <!-- 월 정액 -->
+          <div class="reveal flex flex-col rounded-2xl border-2 border-ink bg-paper p-8">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-bold">월 정액</h3>
+              <span class="rounded-full bg-ink px-3 py-1 text-xs font-semibold text-paper">검증 후</span>
+            </div>
+            <div class="mt-3 text-4xl font-extrabold tracking-tightest">맞춤 견적</div>
+            <p class="mt-2 text-sm text-mute">매달 꾸준히 올릴 콘텐츠가 필요하다면</p>
+            <ul class="mt-6 space-y-3 text-sm">
+              <li class="flex gap-2"><span>✓</span> 매월 정기 숏폼 제작</li>
+              <li class="flex gap-2"><span>✓</span> 다국어(영·스페인어) 확장 옵션</li>
+            </ul>
+            <a href="#apply" class="mt-8 rounded-full border border-ink px-6 py-3 text-center text-sm font-semibold text-ink transition hover:bg-ink hover:text-paper">상담 신청</a>
+          </div>
+        </div>
+        <p class="mt-6 text-center text-xs text-mute">* 가격은 브랜드 상황에 맞춰 협의합니다. 무료 샘플엔 결제 정보가 필요 없습니다.</p>
+      </div>
+    </section>
+
+    <!-- ============ 9. FAQ ============ -->
+    <section id="faq" class="mx-auto max-w-content px-5 py-20 md:py-28">
+      <div class="mx-auto max-w-2xl">
+        <h2 class="reveal mb-10 text-center text-3xl font-extrabold tracking-tightest md:text-4xl">자주 묻는 질문</h2>
+
+        <div class="divide-y divide-line border-y border-line">
+          <details class="group py-5">
+            <summary class="flex cursor-pointer list-none items-center justify-between font-semibold">
+              제작에 얼마나 걸리나요?
+              <span class="text-mute transition group-open:rotate-45">+</span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-mute">무료 샘플은 신청 순서대로 진행하며, 완성 후 메일로 전달드립니다. 정확한 납기는 신청 시 안내드립니다.</p>
+          </details>
+          <details class="group py-5">
+            <summary class="flex cursor-pointer list-none items-center justify-between font-semibold">
+              촬영본이 꼭 있어야 하나요?
+              <span class="text-mute transition group-open:rotate-45">+</span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-mute">아닙니다. AI 영상만으로도 제작 가능하고, 제품 실물 컷이 있으면 실물+AI 혼합으로 더 풍부하게 만들 수 있습니다.</p>
+          </details>
+          <details class="group py-5">
+            <summary class="flex cursor-pointer list-none items-center justify-between font-semibold">
+              영어·스페인어 영상도 되나요?
+              <span class="text-mute transition group-open:rotate-45">+</span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-mute">네. 국문으로 검증한 콘텐츠를 영어·스페인어로 확장해 해외 채널용으로 만들어 드립니다.</p>
+          </details>
+          <details class="group py-5">
+            <summary class="flex cursor-pointer list-none items-center justify-between font-semibold">
+              무료 샘플 조건이 있나요?
+              <span class="text-mute transition group-open:rotate-45">+</span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-mute">결제 정보 없이 인스타 링크와 이메일만 주시면 됩니다. 뷰티·건강기능식품 브랜드를 우선으로 진행합니다.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 10. 리드 캡처 폼 (전환 지점) ============ -->
+    <section id="apply" class="border-t border-line bg-ink text-paper">
+      <div class="mx-auto max-w-content px-5 py-20 md:py-28">
+        <div class="mx-auto max-w-xl text-center">
+          <h2 class="text-3xl font-extrabold tracking-tightest md:text-4xl">내 브랜드 숏폼 영상 받아보기</h2>
+          <p class="mt-4 text-base text-paper/70">아래 폼에 브랜드 인스타 계정과 이메일만 남겨주세요. 복잡한 과정은 kiwi가 알아서 다 해드릴게요.</p>
+        </div>
+
+        <!-- action: Formspree 엔드포인트로 교체 (README 참고) -->
+        <form id="leadForm" action="https://formspree.io/f/XXXXXXX" method="POST"
+              class="mx-auto mt-10 max-w-md space-y-4">
+          <div>
+            <label for="brand" class="mb-1.5 block text-sm font-medium text-paper/80">브랜드명</label>
+            <input id="brand" name="brand" type="text" required placeholder="예: 글로우랩"
+              class="w-full rounded-xl border border-paper/20 bg-paper/5 px-4 py-3 text-paper placeholder-paper/40 outline-none focus:border-paper" />
+          </div>
+          <div>
+            <label for="insta" class="mb-1.5 block text-sm font-medium text-paper/80">인스타그램 링크</label>
+            <input id="insta" name="instagram" type="url" required placeholder="https://instagram.com/yourbrand"
+              class="w-full rounded-xl border border-paper/20 bg-paper/5 px-4 py-3 text-paper placeholder-paper/40 outline-none focus:border-paper" />
+          </div>
+          <div>
+            <label for="ref" class="mb-1.5 block text-sm font-medium text-paper/80">참고하고 싶은 영상 링크 <span class="font-normal text-paper/40">(선택)</span></label>
+            <input id="ref" name="reference_video" type="url" placeholder="인스타그램 또는 틱톡 링크"
+              class="w-full rounded-xl border border-paper/20 bg-paper/5 px-4 py-3 text-paper placeholder-paper/40 outline-none focus:border-paper" />
+            <p class="mt-1.5 text-xs text-paper/50">없으면 kiwi가 찰떡같은 레퍼런스를 찾아드려요!</p>
+          </div>
+          <div>
+            <label for="email" class="mb-1.5 block text-sm font-medium text-paper/80">이메일</label>
+            <input id="email" name="email" type="email" required placeholder="you@brand.com"
+              class="w-full rounded-xl border border-paper/20 bg-paper/5 px-4 py-3 text-paper placeholder-paper/40 outline-none focus:border-paper" />
+          </div>
+          <button type="submit"
+            class="w-full rounded-full bg-paper px-6 py-4 text-base font-semibold text-ink transition hover:opacity-90">
+            내 브랜드 숏폼 영상 받아보기
+          </button>
+          <p class="text-center text-xs text-paper/50">신용카드 불필요 · 제출 시 안내 메일을 보내드립니다</p>
+        </form>
+
+        <!-- 제출 후 감사 메시지 (JS가 표시) -->
+        <div id="leadThanks" class="mx-auto mt-10 hidden max-w-md rounded-2xl border border-paper/20 bg-paper/5 p-8 text-center">
+          <div class="text-2xl font-bold">신청이 접수됐어요 🎉</div>
+          <p class="mt-3 text-sm text-paper/70">담당자가 확인 후 입력하신 이메일로 곧 연락드리겠습니다. 감사합니다!</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ 푸터 ============ -->
+  <footer class="bg-paper">
+    <div class="mx-auto flex max-w-content flex-col gap-6 px-5 py-12 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <div class="flex items-center gap-2">
+          <img src="assets/logo.png" alt="kiwi" class="h-7 w-auto" />
+          <span class="text-lg font-extrabold tracking-tightest">kiwi</span>
+        </div>
+        <p class="mt-1 text-sm text-mute">뷰티·건강기능식품 브랜드를 위한 AI 숏폼 스튜디오</p>
+      </div>
+      <div class="flex flex-col gap-1 text-sm text-mute sm:items-end">
+        <a href="mailto:259official@gmail.com" class="transition hover:text-ink">259official@gmail.com</a>
+        <div class="mt-2 flex gap-5 text-xs">
+          <a href="#" class="transition hover:text-ink">이용약관</a>
+          <a href="#" class="transition hover:text-ink">개인정보처리방침</a>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-line">
+      <p class="mx-auto max-w-content px-5 py-5 text-xs text-mute">© 2026 kiwi. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- 플로팅 CTA 버튼 -->
+  <a id="fab" href="#apply"
+    class="fixed bottom-6 right-6 z-50 hidden items-center gap-2 rounded-full bg-ink px-5 py-3.5 text-sm font-semibold text-paper shadow-lg transition hover:opacity-80">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+    무료 숏폼 받아보기
+  </a>
+
+  <script src="app.js"></script>
+  <script>
+    const fab = document.getElementById('fab');
+    const hero = document.querySelector('section');
+    const applySection = document.getElementById('apply');
+    window.addEventListener('scroll', () => {
+      const heroBottom = hero.getBoundingClientRect().bottom;
+      const applyTop = applySection.getBoundingClientRect().top;
+      if (heroBottom < 0 && applyTop > window.innerHeight) {
+        fab.classList.remove('hidden');
+        fab.classList.add('flex');
+      } else {
+        fab.classList.add('hidden');
+        fab.classList.remove('flex');
+      }
+    });
+  </script>
+</body>
+</html>
