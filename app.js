@@ -127,7 +127,7 @@
           if (res.ok) {
             showThanks();
           } else {
-            alert('전송에 실패했어요. 잠시 후 다시 시도하거나 259official@gmail.com 으로 연락 주세요.');
+            alert('전송에 실패했어요. 잠시 후 다시 시도하거나 rbtjcjswo@gmail.com 으로 연락 주세요.');
             if (btn) { btn.disabled = false; btn.textContent = '무료 샘플 신청하기'; }
           }
         })
