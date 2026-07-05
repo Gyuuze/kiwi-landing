@@ -10,6 +10,7 @@ Tailwind CDN을 쓰는 단일 랜딩 페이지입니다. 신청 폼은 `/api/lea
 - `server.js` — 로컬 확인용 정적 파일/API 서버
 - `.env.example` — 운영 환경 변수 예시
 - `DEPLOYMENT.md` — Vercel, Google Sheets, 커스텀 도메인 배포 체크리스트
+- `integrations/google-sheets-leads.gs` — Google Sheets 저장 + 이메일 알림용 Apps Script
 - `assets/` — 히어로 샘플 영상(`sample-01~04.mp4`) + 포스터(`sample-01~04.jpg`). 540px·무음 루프용 경량 버전
 
 ## 실행
@@ -37,54 +38,18 @@ node server.js
 배포 환경에서는 파일 시스템 저장이 영구 저장소가 아니므로 `LEADS_WEBHOOK_URL` 환경 변수를 반드시 설정해야 합니다.
 실제 도메인을 연결한 뒤에는 `ALLOWED_ORIGINS`에 운영 도메인을 넣어 폼 API 호출 출처를 제한할 수 있습니다.
 
-## Google Sheets에 쌓기
-가장 간단한 운영 방식은 Google Sheets + Apps Script 웹앱입니다.
+## Google Sheets에 쌓고 이메일 알림 받기
+가장 간단한 운영 방식은 Google Sheets + Apps Script 웹앱입니다. 새 신청이 들어오면 시트에 저장하고 담당자 이메일로 알림을 보냅니다.
 
 1. Google Sheets를 만들고 `확장 프로그램 > Apps Script`를 엽니다.
-2. 아래 코드를 붙여 넣습니다.
-   ```javascript
-   const SHEET_NAME = 'leads';
-
-   function doPost(e) {
-     const data = JSON.parse(e.postData.contents || '{}');
-     const expectedSecret = PropertiesService.getScriptProperties().getProperty('LEADS_WEBHOOK_SECRET');
-
-     if (expectedSecret && data.webhookSecret !== expectedSecret) {
-       return json({ ok: false, message: 'Unauthorized' });
-     }
-
-     const ss = SpreadsheetApp.getActiveSpreadsheet();
-     const sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
-
-     if (sheet.getLastRow() === 0) {
-       sheet.appendRow(['createdAt', 'id', 'brand', 'instagram', 'referenceVideo', 'email', 'source', 'ip', 'userAgent']);
-     }
-
-     sheet.appendRow([
-       data.createdAt || new Date().toISOString(),
-       data.id || '',
-       data.brand || '',
-       data.instagram || '',
-       data.referenceVideo || '',
-       data.email || '',
-       data.source || '',
-       data.ip || '',
-       data.userAgent || '',
-     ]);
-
-     return json({ ok: true });
-   }
-
-   function json(value) {
-     return ContentService
-       .createTextOutput(JSON.stringify(value))
-       .setMimeType(ContentService.MimeType.JSON);
-   }
-   ```
-3. 선택 사항: Apps Script의 `프로젝트 설정 > 스크립트 속성`에 `LEADS_WEBHOOK_SECRET`을 추가합니다.
+2. `integrations/google-sheets-leads.gs` 내용을 붙여 넣습니다.
+3. Apps Script의 `프로젝트 설정 > 스크립트 속성`에 아래 값을 추가합니다.
+   - `LEAD_NOTIFICATION_EMAILS`: 신청 알림을 받을 이메일. 여러 명이면 쉼표로 구분합니다.
+   - `LEADS_WEBHOOK_SECRET`: 선택 사항이지만 운영에서는 설정 권장.
 4. `배포 > 새 배포 > 웹 앱`에서 실행 권한은 본인, 액세스 권한은 `Anyone`으로 배포합니다.
 5. 발급된 웹앱 URL을 Vercel 환경 변수 `LEADS_WEBHOOK_URL`에 넣습니다.
 6. 3번에서 시크릿을 설정했다면 동일한 값을 Vercel 환경 변수 `LEADS_WEBHOOK_SECRET`에도 넣습니다.
+7. 테스트 신청을 넣고 Google Sheets 행 추가와 이메일 알림 수신을 함께 확인합니다.
 
 Make, Zapier, Airtable, 자체 백엔드도 JSON POST를 받을 수 있으면 같은 방식으로 연결할 수 있습니다.
 
