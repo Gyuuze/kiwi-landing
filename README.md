@@ -1,44 +1,104 @@
 # Ziki 랜딩 페이지
 
 뷰티·건기식 브랜드 대상 AI 숏폼 대행 서비스(Ziki)의 랜딩 + 무료 샘플 신청 페이지.
-빌드 툴 없이 브라우저로 바로 여는 **정적 단일 페이지**입니다. (정적 HTML + Tailwind CDN)
+Tailwind CDN을 쓰는 단일 랜딩 페이지입니다. 신청 폼은 `/api/leads` API로 제출되고, 로컬에서는 `data/leads.jsonl`에 저장되며 배포 환경에서는 웹훅으로 연결해 실제 수집처에 쌓을 수 있습니다.
 
 ## 파일 구성
 - `index.html` — 전체 페이지 (헤더 → 히어로 → 소셜프루프 → 문제 → 작동방식 → 기능 → 차별점 → 기대효과 → 가격 → FAQ → 신청 폼 → 푸터)
 - `app.js` — 모바일 메뉴, 스크롤 페이드업, 신청 폼 제출 처리
+- `api/leads.js` — 신청 폼 검증 + 저장 API
+- `server.js` — 로컬 확인용 정적 파일/API 서버
+- `.env.example` — 운영 환경 변수 예시
+- `DEPLOYMENT.md` — Vercel, Google Sheets, 커스텀 도메인 배포 체크리스트
 - `assets/` — 히어로 샘플 영상(`sample-01~04.mp4`) + 포스터(`sample-01~04.jpg`). 540px·무음 루프용 경량 버전
 
 ## 실행
-파일을 더블클릭하거나, PowerShell에서:
+Node.js 18 이상에서:
 ```powershell
-start "index.html"
+npm.cmd run dev
 ```
-인터넷 연결 필요 (Tailwind·Pretendard를 CDN으로 불러옴).
+브라우저에서 `http://localhost:3000`을 열면 됩니다. 인터넷 연결 필요 (Tailwind·Pretendard를 CDN으로 불러옴).
 
-## 신청 폼 연결 (Formspree)
-현재 폼은 **미연결 상태**입니다. 이 상태에서도 제출하면 "신청 접수" 감사 메시지는 뜨지만, 실제로 데이터가 어디로도 전송되지 않습니다. 실제 수집을 하려면:
+PowerShell 실행 정책 때문에 `npm`이 막히면 아래처럼 직접 실행해도 됩니다.
+```powershell
+node server.js
+```
 
-1. https://formspree.io 가입 → New Form 생성 (수신 메일: `259official@gmail.com`)
-2. 발급된 엔드포인트(`https://formspree.io/f/abcdwxyz`)를 복사
-3. `index.html`에서 폼 `action` 교체:
-   ```html
-   <form id="leadForm" action="https://formspree.io/f/XXXXXXX" method="POST" ...>
+로컬에서 폼을 제출하면 `data/leads.jsonl` 파일에 JSON Lines 형식으로 한 줄씩 저장됩니다. 이 폴더는 `.gitignore` 처리되어 실제 리드가 저장소에 올라가지 않습니다.
+
+## 신청 폼 저장 흐름
+현재 폼은 실제 API와 연결되어 있습니다.
+
+- 브라우저: `index.html`의 `#leadForm` → `/api/leads`로 JSON 제출
+- API: `api/leads.js`에서 필수값, URL, 이메일 형식 검증
+- 로컬: `LEADS_WEBHOOK_URL`이 없으면 `data/leads.jsonl`에 누적 저장
+- Vercel 등 배포 환경: `LEADS_WEBHOOK_URL`로 리드 데이터를 POST
+
+배포 환경에서는 파일 시스템 저장이 영구 저장소가 아니므로 `LEADS_WEBHOOK_URL` 환경 변수를 반드시 설정해야 합니다.
+실제 도메인을 연결한 뒤에는 `ALLOWED_ORIGINS`에 운영 도메인을 넣어 폼 API 호출 출처를 제한할 수 있습니다.
+
+## Google Sheets에 쌓기
+가장 간단한 운영 방식은 Google Sheets + Apps Script 웹앱입니다.
+
+1. Google Sheets를 만들고 `확장 프로그램 > Apps Script`를 엽니다.
+2. 아래 코드를 붙여 넣습니다.
+   ```javascript
+   const SHEET_NAME = 'leads';
+
+   function doPost(e) {
+     const data = JSON.parse(e.postData.contents || '{}');
+     const expectedSecret = PropertiesService.getScriptProperties().getProperty('LEADS_WEBHOOK_SECRET');
+
+     if (expectedSecret && data.webhookSecret !== expectedSecret) {
+       return json({ ok: false, message: 'Unauthorized' });
+     }
+
+     const ss = SpreadsheetApp.getActiveSpreadsheet();
+     const sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
+
+     if (sheet.getLastRow() === 0) {
+       sheet.appendRow(['createdAt', 'id', 'brand', 'instagram', 'referenceVideo', 'email', 'source', 'ip', 'userAgent']);
+     }
+
+     sheet.appendRow([
+       data.createdAt || new Date().toISOString(),
+       data.id || '',
+       data.brand || '',
+       data.instagram || '',
+       data.referenceVideo || '',
+       data.email || '',
+       data.source || '',
+       data.ip || '',
+       data.userAgent || '',
+     ]);
+
+     return json({ ok: true });
+   }
+
+   function json(value) {
+     return ContentService
+       .createTextOutput(JSON.stringify(value))
+       .setMimeType(ContentService.MimeType.JSON);
+   }
    ```
-   → `XXXXXXX` 자리를 발급받은 ID로 교체
-4. 끝. `app.js`가 자동으로 비동기 전송 + 페이지 이동 없이 감사 메시지를 띄웁니다.
+3. 선택 사항: Apps Script의 `프로젝트 설정 > 스크립트 속성`에 `LEADS_WEBHOOK_SECRET`을 추가합니다.
+4. `배포 > 새 배포 > 웹 앱`에서 실행 권한은 본인, 액세스 권한은 `Anyone`으로 배포합니다.
+5. 발급된 웹앱 URL을 Vercel 환경 변수 `LEADS_WEBHOOK_URL`에 넣습니다.
+6. 3번에서 시크릿을 설정했다면 동일한 값을 Vercel 환경 변수 `LEADS_WEBHOOK_SECRET`에도 넣습니다.
 
-> 대안: Google Forms 임베드, Netlify Forms, mailto 등. Formspree 무료 플랜이 가장 간단.
+Make, Zapier, Airtable, 자체 백엔드도 JSON POST를 받을 수 있으면 같은 방식으로 연결할 수 있습니다.
 
 ## 카피·콘텐츠 교체 위치
 - **서비스명**: `Ziki` (임시) — 헤더 로고·푸터·`<title>`에서 검색해 일괄 교체
-- **연락처 메일**: `259official@gmail.com` — 푸터, README의 Formspree 수신 메일
+- **연락처 메일**: `259official@gmail.com` — 푸터 문의 메일
 - **샘플 영상**: 히어로의 4개 `<video src="assets/sample-0X.mp4">` 교체. 새 원본을 넣을 땐 540px·무음 루프로 압축 권장:
   `ffmpeg -i 원본.mp4 -vf "scale=540:-2" -c:v libx264 -crf 28 -pix_fmt yuv420p -c:a aac -b:a 96k -movflags +faststart assets/sample-0X.mp4`
   포스터: `ffmpeg -ss 0.3 -i assets/sample-0X.mp4 -frames:v 1 assets/sample-0X.jpg`
 - **숫자·메트릭**: 소셜프루프·기대효과 섹션 — ⚠️ 검증 전 메트릭(ROI·전환율·배수)은 넣지 말 것. 현재는 "목표/기대" 프레이밍으로 작성됨
 
 ## 배포 (선택, 추후)
-정적 파일이라 Vercel / Netlify / GitHub Pages에 폴더째 drag-and-drop 하면 바로 배포됩니다.
+API가 포함되어 있으므로 Vercel 배포를 권장합니다. 배포 후 `LEADS_WEBHOOK_URL` 환경 변수를 설정해야 실제 운영 리드가 영구 저장됩니다.
+실제 도메인 연결 순서는 `DEPLOYMENT.md`를 참고하세요.
 
 ## 톤 & 디자인
 - 미니멀 블랙앤화이트 (`#0A0A0A` 잉크 / `#FFFFFF` 페이퍼 / `#F5F5F5` 회색)

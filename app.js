@@ -97,43 +97,54 @@
 
   if (form) {
     form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
       // 브라우저 기본 유효성 검사(required, type=email/url) 먼저
       if (!form.checkValidity()) {
+        form.reportValidity();
         return; // 브라우저가 에러 메시지 노출
       }
 
       const action = form.getAttribute('action') || '';
-      const configured = action && action.indexOf('XXXX') === -1;
+      const endpoint = action || '/api/leads';
+      const data = new FormData(form);
+      const payload = Object.fromEntries(data.entries());
+      const btn = form.querySelector('button[type="submit"]');
+      const originalButtonText = btn ? btn.textContent : '';
 
-      // Formspree 미연결(플레이스홀더) 상태면: 기본 제출 막고 감사 메시지만 표시
-      if (!configured) {
-        e.preventDefault();
-        showThanks();
-        return;
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = '전송 중...';
       }
 
-      // Formspree 연결됨: fetch로 비동기 제출 → 페이지 이동 없이 감사 메시지
-      e.preventDefault();
-      const data = new FormData(form);
-      const btn = form.querySelector('button[type="submit"]');
-      if (btn) { btn.disabled = true; btn.textContent = '전송 중...'; }
-
-      fetch(action, {
+      fetch(endpoint, {
         method: 'POST',
-        body: data,
-        headers: { Accept: 'application/json' },
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
       })
         .then(function (res) {
-          if (res.ok) {
+          return res.json()
+            .catch(function () { return {}; })
+            .then(function (body) {
+              return { ok: res.ok, body: body };
+            });
+        })
+        .then(function (result) {
+          if (result.ok && result.body.ok) {
             showThanks();
           } else {
-            alert('전송에 실패했어요. 잠시 후 다시 시도하거나 rbtjcjswo@gmail.com 으로 연락 주세요.');
-            if (btn) { btn.disabled = false; btn.textContent = '무료 샘플 신청하기'; }
+            throw new Error(result.body.message || '전송에 실패했어요. 잠시 후 다시 시도해 주세요.');
           }
         })
-        .catch(function () {
-          alert('네트워크 오류가 발생했어요. 잠시 후 다시 시도해 주세요.');
-          if (btn) { btn.disabled = false; btn.textContent = '무료 샘플 신청하기'; }
+        .catch(function (error) {
+          alert(error.message || '네트워크 오류가 발생했어요. 잠시 후 다시 시도해 주세요.');
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = originalButtonText || '내 브랜드 숏폼 영상 받아보기';
+          }
         });
     });
   }

@@ -377,9 +377,12 @@
           <p class="mt-4 text-base text-paper/70">아래 폼에 브랜드 인스타 계정과 이메일만 남겨주세요. 복잡한 과정은 kiwi가 알아서 다 해드릴게요.</p>
         </div>
 
-        <!-- action: Formspree 엔드포인트로 교체 (README 참고) -->
-        <form id="leadForm" action="https://formspree.io/f/XXXXXXX" method="POST"
+        <form id="leadForm" action="/api/leads" method="POST"
               class="mx-auto mt-10 max-w-md space-y-4">
+          <div class="hidden" aria-hidden="true">
+            <label for="website">웹사이트</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
           <div>
             <label for="brand" class="mb-1.5 block text-sm font-medium text-paper/80">브랜드명</label>
             <input id="brand" name="brand" type="text" required placeholder="예: 글로우랩"
